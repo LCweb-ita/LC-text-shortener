@@ -2,7 +2,7 @@
 	* LC text shortener
 	* micro jQuery plugin to create excerpts on the fly, basing on fixed or container's height
 	*
-	* @version: 	1.0
+	* @version: 	1.01
 	* @requires:	jQuery v1.5 or later
 	* @author:		Luca Montanari (LCweb)
 	* @website:		http://www.lcweb.it
@@ -89,7 +89,7 @@
 						$(this).replaceWith(content);
 					});
 					
-					var orig_contents = $subj.html();
+					var orig_contents = $.trim($subj.html().replace(/(\r\n|\n|\r)/gm,""));
 					var exploded = orig_contents.split(' ');
 					var new_contents = '';
 					var right_h_txt =  '';
@@ -109,35 +109,35 @@
 							a++;
 						}
 					}
-					
-					
+							
 					// avoid BR as last element
-					while( $subj.find('.lcts_end_txt').prev().is('br') ) {
-						$subj.find('br').last().remove();	
+					if(right_h_txt.match('<br>', 'g') != null) {
+						while( right_h_txt.slice(-5) == '<br>') {
+							right_h_txt = $.trim(right_h_txt.slice(0, -4));	
+						}
 					}
-					
-					
+
 					// check unclosed tags 
 					var tags = lcts_data[uniqID].allowed_tags;
 					$.each(tags, function(i, v) {
-						if(v == 'br') {return true;} // not for BR
 						
-						var open_count = right_h_txt.match('<'+v, 'g');  
-						var close_count = right_h_txt.match('</'+v, 'g');
-						
-						if(open_count != null) {
-							if(open_count != null && close_count == null || open_count.length > close_count.length) {
-								right_h_txt = right_h_txt + '</'+ v +'>';
+						if(v != 'br') { // not for BR
+							var open_count = right_h_txt.match('<'+v, 'g');  
+							var close_count = right_h_txt.match('</'+v, 'g');
+							
+							if(open_count != null) {
+								if(open_count != null && close_count == null || open_count.length > close_count.length) {
+									right_h_txt = right_h_txt + '</'+ v +'>';
+								}
 							}
 						}
-						
+							
 						if(i == (tags.length - 1)) {
-							$subj.html(right_h_txt + '<span class="lcts_end_txt">'+ end_txt +'</span>');	
+							$subj.html($.trim(right_h_txt) + ' <span class="lcts_end_txt">'+ end_txt +'</span>');	
 							$subj.find('*:empty').not('br').remove();
 						}
 					});
-					
-					
+
 					// last P tag fix
 					$subj.find('p').last().css('display', 'inline');
 				}

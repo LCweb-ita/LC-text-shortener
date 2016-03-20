@@ -147,31 +147,14 @@ small {
 
 <script type="text/javascript">
 $(document).ready(function(e) {
-	$('#resize_form input[name=w]').val( $('#shortened_txt').width() );
-	$('#resize_form').submit(function() {
-		return false;	
-	});
-	
-	// manual resize
-	$('#resize_form input[type=button]').click(function() {
-		var w = parseInt($('#resize_form input[name=w]').val()); 
-		var h = parseInt($('#resize_form input[name=h]').val()); 
-		
-		$('#shortened_txt').css('width', w);
-		$('#shortened_txt').lc_txt_shortener('[..]', h);
-	});
-	
-	
 	$("#shortened_wrap").resizable({
 		stop: function(event, ui) {
 			$('#shortened_txt').css('height', 'auto').css('width', ui.size.width);
 			$('#shortened_txt').lc_txt_shortener('[..]', false, 'strong, a , em');
 		}
 	});
-	
-	
+
 	$('#shortened_txt').lc_txt_shortener('[..]', 250, 'strong, a , em');
-	
 });
 </script>
 
