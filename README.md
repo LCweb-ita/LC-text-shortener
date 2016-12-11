@@ -24,4 +24,4 @@ http://www.lcweb.it/lc-text-shortener-jquery-plugin
 
 * * *
 
-Copyright (c) Luca Montanari - LCweb 
+Copyright &copy; Luca Montanari - LCweb 
